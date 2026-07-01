@@ -1,0 +1,357 @@
+/* Custom styles for B-Side Virtual Merch POS - Transparent Grayscale Edition */
+
+:root {
+    --bg-dark: #0a0a0c;
+    /* Increased transparency from 0.55 to 0.25 */
+    --card-bg: rgba(25, 25, 28, 0.25);
+    --border-color: rgba(255, 255, 255, 0.06);
+    --neon-pink: #ffffff;
+    --neon-pink-hover: #e2e8f0;
+    --neon-blue: #f1f5f9;
+    --neon-purple: #cbd5e1;
+    --neon-green: #e2e8f0;
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --glass-blur: blur(20px); /* Slightly increased blur to make higher transparency readable */
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Background Mesh Glows */
+.bg-mesh {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background: transparent;
+    pointer-events: none;
+}
+
+/* Glassmorphism Components */
+.header-glass {
+    backdrop-filter: var(--glass-blur);
+    /* Lowered opacity for a cleaner float effect */
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.glass-card {
+    backdrop-filter: var(--glass-blur);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.03);
+}
+
+/* Typography & Neon Glows */
+.logo-text {
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #ffffff 40%, #64748b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.6rem;
+}
+
+.logo-subtext {
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    -webkit-text-fill-color: var(--text-secondary);
+}
+
+.text-neon-pink {
+    color: var(--text-primary);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.text-neon-blue {
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.bg-neon-purple-glow {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    color: #f8fafc;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+.spinning-logo {
+    display: inline-block;
+    animation: rotateLogo 8s linear infinite;
+}
+
+@keyframes rotateLogo {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Search bar styling */
+.search-icon-bg {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-radius: 12px 0 0 12px !important;
+}
+
+.search-input, .form-select {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    color: var(--text-primary) !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease;
+}
+
+.search-input:focus, .form-select:focus {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Product Cards */
+.product-card {
+    /* Lowered opacity baseline to allow more background blend */
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 1.25rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px);
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #ffffff;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.product-card:hover::before {
+    opacity: 1;
+}
+
+.product-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.artist-badge {
+    font-weight: 500;
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.6rem;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.product-price {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+/* Stock Badges */
+.badge-stock {
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.badge-stock-in {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.badge-stock-low {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+}
+
+.badge-stock-out {
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    color: #64748b;
+    text-decoration: line-through;
+}
+
+/* Cart Panel & Checkout */
+.checkout-panel {
+    border-top: 4px solid #ffffff;
+}
+
+.cart-item {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.cart-item:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Quantity controls in cart */
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: none;
+    color: var(--text-primary);
+    transition: all 0.1s ease;
+}
+
+.qty-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.qty-val {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.cart-item-remove {
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s ease;
+}
+
+.cart-item-remove:hover {
+    color: #ffffff;
+}
+
+/* Buttons */
+.btn-neon-pink {
+    background: #ffffff;
+    border: 1px solid transparent;
+    color: #0a0a0c;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    font-weight: 700;
+}
+
+.btn-neon-pink:hover:not(:disabled) {
+    background: #e2e8f0;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+    color: #0a0a0c;
+}
+
+.btn-neon-pink:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-icon-round {
+    border-radius: 50% !important;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s ease;
+}
+
+/* Custom Scrollbar for Cart list */
+#cart-container::-webkit-scrollbar {
+    width: 6px;
+}
+#cart-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.01);
+}
+#cart-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+#cart-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Custom Alerts styling */
+.custom-toast {
+    backdrop-filter: var(--glass-blur);
+    border-radius: 12px;
+    color: white;
+    padding: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.custom-toast-success {
+    background: rgba(30, 30, 35, 0.6);
+    border-left: 5px solid #ffffff;
+}
+
+.custom-toast-danger {
+    background: rgba(15, 15, 18, 0.6);
+    border-left: 5px solid #64748b;
+}

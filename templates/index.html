@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Point of sale and stock management of merchandise for independent musical artists.">
+    <title>B-Side</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Animated background mesh -->
+    <div class="bg-mesh"></div>
+
+    <div class="container py-4 main-container">
+        <!-- Header -->
+        <header class="d-flex flex-wrap align-items-center justify-content-between pb-3 mb-4 border-bottom border-secondary-subtle header-glass">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none logo-link">
+                <span class="logo-icon me-2"><i class="bi bi-disc-fill text-neon-pink spinning-logo"></i></span>
+                <span class="logo-text">B-SIDE</span>
+            </a>
+        </header>
+
+        <!-- Notification Center -->
+        <div id="alert-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
+
+        <div class="row g-4">
+            <!-- Left Side: Product Catalogue & Inventory (UC-2) -->
+            <div class="col-lg-8">
+                <div class="card glass-card h-100">
+                    <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pt-4 px-4">
+                        <div>
+                            <h2 class="card-title text-white h4 mb-1">
+                                <i class="bi bi-grid-fill text-neon-blue me-2"></i>Products
+                            </h2>
+                            <p class="text-muted small mb-0">Check Stock</p>
+                        </div>
+                        <button id="btn-refresh" class="btn btn-outline-light btn-sm btn-icon-round" title="Actualizar Stock">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Search & Filter Controls -->
+                    <div class="card-body px-4 pt-3 pb-2">
+                        <div class="row g-2">
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    <span class="input-group-text search-icon-bg border-0 text-muted"><i class="bi bi-search"></i></span>
+                                    <input type="text" id="search-input" class="form-control border-0 bg-dark-subtle text-white search-input" placeholder="...">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <select id="filter-artist" class="form-select border-0 bg-dark-subtle text-white">
+                                    <option value="">All artists</option>
+                                    <!-- Options will be populated dynamically -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products Grid/List -->
+                    <div class="card-body px-4">
+                        <div id="loading-spinner" class="text-center py-5">
+                            <div class="spinner-border text-neon-blue" role="status">
+                                <span class="visually-hidden">Loading stock...</span>
+                            </div>
+                        </div>
+                        <div id="products-container" class="row row-cols-1 row-cols-md-2 g-3 d-none">
+                            <!-- Dynamically loaded products -->
+                        </div>
+                        <div id="empty-catalog-message" class="text-center py-5 d-none">
+                            <i class="bi bi-emoji-frown fs-1 text-muted"></i>
+                            <h4 class="text-white mt-3 mb-1">No products were found</h4>
+                            <p class="text-muted">Try other terms and filters.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: POS Checkout / Cart (UC-1) -->
+            <div class="col-lg-4">
+                <div class="card glass-card h-100 checkout-panel d-flex flex-column">
+                    <div class="card-header bg-transparent border-0 pt-4 px-4">
+                        <h2 class="card-title text-white h4 mb-1">
+                            <i class="bi bi-cart4 text-neon-pink me-2"></i>Register sale
+                        </h2>
+                        <p class="text-muted small mb-0">Sale details</p>
+                    </div>
+
+                    <!-- Cart Items -->
+                    <div class="card-body px-4 flex-grow-1 overflow-y-auto" id="cart-container" style="max-height: 400px;">
+                        <div id="empty-cart-message" class="text-center py-5 text-muted">
+                            <i class="bi bi-bag-plus fs-2 text-neon-pink opacity-50 mb-3 d-block"></i>
+                            <p class="mb-0">Empty cart.</p>
+                            <p class="small text-muted">Click products to add them to the cart.</p>
+                        </div>
+                        
+                        <!-- List of selected products -->
+                        <div id="cart-items-list" class="d-none">
+                            <!-- Items inserted dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Cart Footer / Summary -->
+                    <div class="card-footer bg-transparent border-top border-secondary-subtle p-4 mt-auto">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">Total:</span>
+                            <span class="h3 text-white mb-0" id="cart-total">$0.00</span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="payment-method" class="form-label text-muted small">Payment Method</label>
+                            <select id="payment-method" class="form-select border-0 bg-dark-subtle text-white">
+                                <option value="efectivo">Cash</option>
+                                <option value="tarjeta">Card</option>
+                                <option value="transferencia">Sinpe Móvil</option>
+                            </select>
+                        </div>
+
+                        <button id="btn-checkout" class="btn btn-neon-pink w-100 py-3 fw-bold mt-2" disabled>
+                            <i class="bi bi-cash-coin me-2"></i>Confirm Sale
+                        </button>
+                        
+                        <button id="btn-clear-cart" class="btn btn-link btn-sm w-100 text-center text-muted mt-2 text-decoration-none">
+                            <i class="bi bi-trash-fill me-1"></i>Empty Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-5 pt-3 border-top border-secondary-subtle">
+            <p class="text-muted small mb-0">&copy; 2026 CHIKI SA.</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Frontend logic script -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
