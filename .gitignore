@@ -1,0 +1,30 @@
+# Python / Flask:
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+instance/
+.webassets-cache
+
+# Environments:
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Database:
+# Keeps your local SQLite database out of the repository
+*.db
+*.sqlite3
+
+# Frontend / Node (Bootstrap):
+# If Bootstrap was installed via npm:
+node_modules/
+.eslintcache
+
+# Operating System Files:
+.DS_Store
+Thumbs.db
