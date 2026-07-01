@@ -1,8 +1,9 @@
-# B-Side - Independent Artist Merchandise POS
+# B-Side - Independent Artist Merchandise POS:
 
 This project is about a basic Point of Sale (POS) web system for the virtual store
 "B-Side" that sells merchandise of independent musical artists. It fulfills 2 core
 use cases:
+
 1. **Register a Product Sale** (reduces stock, logs transaction details).
 2. **Consult Available Stock / Inventory** (queries stock, handles database consistency).
 
@@ -28,6 +29,7 @@ B-Side/
 ├── package.json            # Node Dependencies (for ESLint).
 ├── pylintrc                # Pylint configuration.
 ├── eslint.config.js        # ESLint configuration.
+├── setup.sh                # venv initiation script.
 ├── static/
 │   ├── css/
 │   │   └── style.css       # Custom styles (Dark theme, glassmorphism, animations).
@@ -37,6 +39,31 @@ B-Side/
 │   └── index.html          # HTML Template (Bootstrap Layout).
 └── tests/
     └── test_app.py         # Pytest test suite (covers Use Cases and edge cases).
+```
+
+---
+# Project Execution:
+
+Move to the root directory of the project.
+```sh
+cd B-Side/
+```
+
+Run the venv initiation script:
+```sh
+chmod +x setup.sh
+
+./setup.sh
+```
+
+Activate the virtual environment:
+```sh
+source .venv/bin/activate
+```
+
+Initiate the app:
+```sh
+python app.py
 ```
 
 ---
