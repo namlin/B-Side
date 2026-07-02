@@ -92,7 +92,7 @@ function populateArtistFilter() {
     const artists = [...new Set(products.map(p => p.artist_name))].sort();
 
     // Reset options
-    filterArtist.innerHTML = '<option value="">Todos los artistas</option>';
+    filterArtist.innerHTML = '<option value="">All artists</option>';
 
     artists.forEach(artist => {
         const option = document.createElement('option');
@@ -183,7 +183,7 @@ function renderProducts() {
                     <span class="product-price">$${product.price.toFixed(2)}</span>
                     <button class="btn btn-outline-light btn-sm add-to-cart-btn"
                             ${isOutOfStock ? 'disabled' : ''}>
-                        <i class="bi bi-plus-lg me-1"></i>Agregar
+                        <i class="bi bi-plus-lg me-1"></i>Add
                     </button>
                 </div>
             </div>
