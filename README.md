@@ -58,7 +58,7 @@ chmod +x setup.sh
 
 Activate the virtual environment:
 ```sh
-source ./venv/bin/activate
+source /venv/bin/activate
 ```
 
 Initiate the app:
@@ -70,6 +70,7 @@ Run tests:
 ```sh
 pytest
 ```
+
 The pos API verification, 'verify_pos.py' must be excecuted while the pos is running
 ```sh
 python ./tests/verify_pos.py
@@ -77,7 +78,7 @@ python ./tests/verify_pos.py
 
 Run pylint:
 ```sh
-pylint database.py app.py verify_pos.py 
+pylint database.py app.py tests/verify_pos.py 
 ```
 
 Run bandit:

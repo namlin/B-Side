@@ -128,7 +128,9 @@ def transaction_rollback_verification():
             {"product_id": 4, "quantity": 100}
         ]
     }
-    status, result = make_request("/api/sales", method="POST", data=rollback_cart)
+
+    # status, result = make_request("/api/sales", method="POST", data=rollback_cart)
+    status = make_request("/api/sales", method="POST", data=rollback_cart)
     # Check that stock of Product 1 remained at 48 (not 46)
     status, products = make_request("/api/products")
 
