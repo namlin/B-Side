@@ -66,4 +66,9 @@ Initiate the app:
 python app.py
 ```
 
+Initiate the app:
+```sh
+pytest
+```
+
 ---
