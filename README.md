@@ -80,9 +80,9 @@ Run pylint:
 pylint database.py app.py verify_pos.py 
 ```
 
-Run PMD analisis:
+Run bandit:
 ```sh
-
+bandit -r app.py database.py
 ```
 
 ---
