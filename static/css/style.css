@@ -355,3 +355,12 @@ body {
     background: rgba(15, 15, 18, 0.6);
     border-left: 5px solid #64748b;
 }
+
+.card-img-top {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.glass-card .card:hover .card-img-top {
+    transform: scale(1.03); /* Subtle zoom effect on hover */
+}
