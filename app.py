@@ -20,12 +20,12 @@ if os.environ.get("FLASK_ENV") != "testing":
 
 @app.route("/")
 def index():
-    # Serves the main application page:
+    """Serve the main application page."""
     return render_template("index.html")
 
 @app.route("/api/products", methods=["GET"])
 def get_products():
-    # API endpoint to check available stock / inventory (UC-2):
+    """API endpoint to check available stock / inventory (UC-2):"""
     try:
         products = database.get_products()
         return jsonify(products), 200
@@ -37,7 +37,7 @@ def get_products():
 # pylint: disable=too-many-return-statements
 @app.route("/api/sales", methods=["POST"])
 def register_sale():
-    # API endpoint to register product sales (UC-1):
+    """API endpoint to register product sales (UC-1):"""
     data = request.get_json()
 
     if not data or "items" not in data:
@@ -71,5 +71,5 @@ def register_sale():
 
 if __name__ == "__main__":
     # Get port from the environment or default to 5000:
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 3000))
     app.run(host="0.0.0.0", port=port, debug=True)

@@ -15,11 +15,6 @@ env/
 venv/
 ENV/
 
-# Database:
-# Keeps your local SQLite database out of the repository
-*.db
-*.sqlite3
-
 # Frontend / Node (Bootstrap):
 # If Bootstrap was installed via npm:
 node_modules/

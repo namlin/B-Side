@@ -30,9 +30,9 @@ const alertContainer = document.getElementById('alert-container');
 function showAlert(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `custom-toast custom-toast-${type}`;
-    
+
     const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';
-    
+
     toast.innerHTML = `
         <div class="d-flex align-items-center">
             <i class="bi ${icon} me-2 fs-5"></i>
@@ -40,15 +40,15 @@ function showAlert(message, type = 'success') {
         </div>
         <button type="button" class="btn-close btn-close-white ms-3" aria-label="Close"></button>
     `;
-    
+
     // Setup close button listener
     const closeBtn = toast.querySelector('.btn-close');
     closeBtn.addEventListener('click', () => {
         toast.remove();
     });
-    
+
     alertContainer.appendChild(toast);
-    
+
     // Auto-remove after 4 seconds
     setTimeout(() => {
         if (toast.parentNode) {
@@ -64,15 +64,15 @@ async function fetchProducts() {
     loadingSpinner.classList.remove('d-none');
     productsContainer.classList.add('d-none');
     emptyCatalogMessage.classList.add('d-none');
-    
+
     try {
         const response = await fetch('/api/products');
         if (!response.ok) {
             throw new Error('Error de servidor al cargar productos.');
         }
-        
+
         products = await response.json();
-        
+
         populateArtistFilter();
         renderProducts();
     } catch (error) {
@@ -87,20 +87,20 @@ async function fetchProducts() {
  */
 function populateArtistFilter() {
     const currentSelection = filterArtist.value;
-    
+
     // Extract unique artist names
     const artists = [...new Set(products.map(p => p.artist_name))].sort();
-    
+
     // Reset options
-    filterArtist.innerHTML = '<option value="">Todos los artistas</option>';
-    
+    filterArtist.innerHTML = '<option value="">All artists</option>';
+
     artists.forEach(artist => {
         const option = document.createElement('option');
         option.value = artist;
         option.textContent = artist;
         filterArtist.appendChild(option);
     });
-    
+
     // Restore selection if it still exists
     if (artists.includes(currentSelection)) {
         filterArtist.value = currentSelection;
@@ -110,55 +110,68 @@ function populateArtistFilter() {
 /**
  * Render catalog products with filters applied (UC-2)
  */
+/**
+ * Render catalog products with filters applied (UC-2)
+ */
 function renderProducts() {
     const query = searchInput.value.toLowerCase().trim();
     const artistFilter = filterArtist.value;
-    
+
     // Filter products list
     const filtered = products.filter(product => {
-        const matchesSearch = 
+        const matchesSearch =
             product.name.toLowerCase().includes(query) ||
             product.artist_name.toLowerCase().includes(query) ||
             product.genre.toLowerCase().includes(query);
-            
+
         const matchesArtist = !artistFilter || product.artist_name === artistFilter;
-        
+
         return matchesSearch && matchesArtist;
     });
-    
+
     // Toggle loading views
     loadingSpinner.classList.add('d-none');
-    
+
     if (filtered.length === 0) {
         productsContainer.classList.add('d-none');
         emptyCatalogMessage.classList.remove('d-none');
         return;
     }
-    
+
     emptyCatalogMessage.classList.add('d-none');
     productsContainer.classList.remove('d-none');
-    
+
     productsContainer.innerHTML = '';
-    
+
+    // FIXED: Exactly one loop here
     filtered.forEach(product => {
         const isOutOfStock = product.stock <= 0;
         let stockBadgeClass = 'badge-stock-in';
-        let stockText = `${product.stock} unidades`;
-        
+        let stockText = `${product.stock} units`;
+
         if (isOutOfStock) {
             stockBadgeClass = 'badge-stock-out';
-            stockText = 'Agotado';
+            stockText = 'Out of Stock';
         } else if (product.stock <= 5) {
             stockBadgeClass = 'badge-stock-low';
-            stockText = `Bajo stock: ${product.stock} un.`;
+            stockText = `Low stock: ${product.stock} un.`;
         }
-        
+
+        // --- DYNAMIC IMAGE CONFIGURATION ---
+        const imagePath = `/static/images/${product.id}.jpg`;
+
         const cardCol = document.createElement('div');
         cardCol.className = 'col';
         cardCol.innerHTML = `
-            <div class="product-card h-100 d-flex flex-column justify-content-between ${isOutOfStock ? 'opacity-75' : ''}" 
+            <div class="product-card h-100 d-flex flex-column justify-content-between ${isOutOfStock ? 'opacity-75' : ''}"
                  data-id="${product.id}">
                 <div>
+                    <div class="product-img-container mb-3 text-center">
+                        <img src="${imagePath}"
+                            class="img-fluid rounded" alt="${product.name}"
+                            style="max-height: 250px; width: auto;" onerror="this.onerror=null; this.src='/static/images/products/default.jpg';">
+                    </div>
+
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <span class="artist-badge">${product.artist_name}</span>
                         <span class="badge badge-stock ${stockBadgeClass}">${stockText}</span>
@@ -168,28 +181,29 @@ function renderProducts() {
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-auto pt-2">
                     <span class="product-price">$${product.price.toFixed(2)}</span>
-                    <button class="btn btn-outline-light btn-sm add-to-cart-btn" 
+                    <button class="btn btn-outline-light btn-sm add-to-cart-btn"
                             ${isOutOfStock ? 'disabled' : ''}>
-                        <i class="bi bi-plus-lg me-1"></i>Agregar
+                        <i class="bi bi-plus-lg me-1"></i>Add
                     </button>
                 </div>
             </div>
         `;
-        
-        // Add click listener to card (add to cart)
+
+        // Add click listener to card (add to cart):
         const card = cardCol.querySelector('.product-card');
         const addBtn = cardCol.querySelector('.add-to-cart-btn');
-        
+
         const actionAdd = (e) => {
             e.stopPropagation();
+
             if (!isOutOfStock) {
                 addToCart(product.id);
             }
         };
-        
+
         card.addEventListener('click', actionAdd);
         addBtn.addEventListener('click', actionAdd);
-        
+
         productsContainer.appendChild(cardCol);
     });
 }
